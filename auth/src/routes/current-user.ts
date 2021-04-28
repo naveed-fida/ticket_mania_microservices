@@ -1,7 +1,6 @@
 import { Router, Request, Response }  from 'express';
-import jwt from 'jsonwebtoken';
 
-import {currentUser} from "../middlewares/current-user";
+import { currentUser } from "@nf-ticket-mania/shared";
 
 const router = Router();
 
