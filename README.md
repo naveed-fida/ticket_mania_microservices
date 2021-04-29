@@ -20,3 +20,5 @@ These services come together inside a Next.js web client.
 ## Repository Structure
 The main repository holds infrastructure related config files while the services and some shared code are held in
  seperate repositories that are marked as the submodules of this repository.
+ 
+**This project is incomplete and is ongoing".
