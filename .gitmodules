@@ -1,6 +1,6 @@
 [submodule "auth"]
 	path = auth
-	url = ./auth
+	url = git@github.com:naveed-fida/ticket_mania_shared.git
 [submodule "client"]
 	path = client
 	url = ./client
