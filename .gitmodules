@@ -1,0 +1,9 @@
+[submodule "auth"]
+	path = auth
+	url = ./auth
+[submodule "client"]
+	path = client
+	url = ./client
+[submodule "shared"]
+	path = shared
+	url = ./shared
