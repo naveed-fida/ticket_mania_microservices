@@ -1,3 +1,4 @@
+**This project is incomplete and is ongoing.**
 # TicketMania App
 A Node.js project created to practice ideas in microservices. It's a web app through which users can sell and buy tickets to events. It has the following services:
 
@@ -23,5 +24,3 @@ The shared code is bundled as an npm package and then added as a dependency wher
 ## Repository Structure
 The main repository holds infrastructure related config files while the services and the shared code are held in
  seperate repositories that are marked as the submodules of this repository.
- 
-**This project is incomplete and is ongoing.**
