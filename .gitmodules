@@ -3,7 +3,7 @@
 	url = git@github.com:naveed-fida/ticket_mania_auth.git
 [submodule "client"]
 	path = client
-	url = ./client
+	url = git@github.com:naveed-fida/ticket_mania_client.git
 [submodule "shared"]
 	path = shared
-	url = ./shared
+	url = git@github.com:naveed-fida/ticket_mania_shared.git
