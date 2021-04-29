@@ -8,7 +8,8 @@ A Node.js project created to practice ideas in microservices. It's a web app thr
 5. **payments**: Handles credit card payments.
 
 ## Why These Five Services?
-These amount of services here are an obvious overkill as no single one has a lot of complexity.The five services aren't chosen for any reason other than to have as many services as possible to explore issues in microservices.
+These amount of services here are an obvious overkill as no single one has a lot of complexity. The five services
+ have been chosen for no reason other than to have as many services as possible to explore issues in microservices.
 
 ## Infrastructure
 Docker and kubernetes are used to manage instances of these services and handle networking between them.
