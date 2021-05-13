@@ -13,4 +13,11 @@ export const errorHandler = (
       errors: err.toArray()
     });
   }
+
+  console.log(err);
+
+  res.status(400)
+    .send({
+      errors: [{ message: 'Something went wrong!' }]
+    })
 };
