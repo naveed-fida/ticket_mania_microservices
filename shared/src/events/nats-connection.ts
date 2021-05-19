@@ -3,31 +3,31 @@ import {Listener, MessageCallback} from "./base-listener";
 import {Event} from "./event-types";
 import {EventEmitter} from 'events';
 
-export class NATSConnection extends EventEmitter {
-  private client: Stan;
-  private myListeners: Listener<any>[] = [];
+export class NATSConnection {
+  private client?: Stan;
 
-  constructor(clusterID: string, clientId: string, options: StanOptions) {
-    super();
+  constructor() {
+    this.handleProcessSignals();
+  }
 
+  public connect(clusterID: string, clientId: string, options: StanOptions) {
     this.client = nats.connect(
       clusterID,
       clientId,
       options
     );
 
-    this.handleLifeCycleEvents();
-    this.handleProcessSignals();
-  }
+    return new Promise<void>((resolve, reject) => {
+      this.client!.on('connect', () => {
+        console.log("Connected to NATS");
+        resolve();
 
-  handleLifeCycleEvents() {
-    this.client.on('connect', () => {
-      console.log("Connected to NATS");
-      this.myListeners.forEach((l) => l.subscribe());
-      this.emit('connect');
-      this.client.on('close', () => {
-        console.log('NATS connection closed!');
+        this.client!.on('close', () => {
+          console.log('NATS connection closed!');
+        });
       });
+
+      this.client!.on('error', (err) => reject(err))
     });
   }
 
@@ -35,19 +35,18 @@ export class NATSConnection extends EventEmitter {
     subject: T['subject'],
     queueGroupName: string,
     onMessage: MessageCallback<T>
-  }) {
-    const listener = new Listener<T>(this.client, options);
-    this.myListeners.push(listener);
+  }): Listener<T> {
+    return new Listener<T>(this.client!, options);
   }
 
-  publish<T extends Event>(options: {
+  public publish<T extends Event>(options: {
     subject: T['subject'],
     data: T['data']
   }): Promise<void> {
     return new Promise((resolve, reject) => {
       const {subject, data} = options;
 
-      this.client.publish(subject, JSON.stringify(data), (err, ) => {
+      this.client!.publish(subject, JSON.stringify(data), (err, ) => {
         if (err) return reject(err);
         console.log('Event Published to subject: ' + subject);
         resolve()
@@ -55,8 +54,8 @@ export class NATSConnection extends EventEmitter {
     });
   }
 
-  handleProcessSignals() {
-    process.on('SIGINT', () => this.client.close());
-    process.on('SIGTERM', () => this.client.close());
+  private handleProcessSignals() {
+    process.on('SIGINT', () => this.client!.close());
+    process.on('SIGTERM', () => this.client!.close());
   }
 }
