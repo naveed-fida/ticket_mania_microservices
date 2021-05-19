@@ -3,7 +3,7 @@ import {Listener, MessageCallback} from "./base-listener";
 import {Event} from "./event-types";
 import {EventEmitter} from 'events';
 
-export default class NATSConnection extends EventEmitter {
+export class NATSConnection extends EventEmitter {
   private client: Stan;
   private myListeners: Listener<any>[] = [];
 
