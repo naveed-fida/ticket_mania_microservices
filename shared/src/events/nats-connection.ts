@@ -1,7 +1,6 @@
 import nats, {Stan, StanOptions} from "node-nats-streaming";
 import {Listener, MessageCallback} from "./base-listener";
 import {Event} from "./event-types";
-import {EventEmitter} from 'events';
 
 export class NATSConnection {
   private client?: Stan;
@@ -31,7 +30,7 @@ export class NATSConnection {
     });
   }
 
-  public addNewListener<T extends Event>(options: {
+  public createListener<T extends Event>(options: {
     subject: T['subject'],
     queueGroupName: string,
     onMessage: MessageCallback<T>
