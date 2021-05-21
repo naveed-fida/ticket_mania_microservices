@@ -5,10 +5,10 @@ import cookieSession from "cookie-session";
 import 'express-async-errors';
 import { NotFoundError, errorHandler, currentUser } from "@nf-ticket-mania/shared";
 
-import {createTicketRouter} from "./routes/create";
-import {showTicketRouter} from "./routes/show";
-import {indexRouter} from "./routes";
-import {updateRouter} from "./routes/update";
+import {deleteOrderRouter} from "./routes/delete";
+import {showOrderRouter} from "./routes/show";
+import {indexOrderRouter} from "./routes";
+import {createOrderRouter} from "./routes/create";
 
 const app = express();
 app.set("trust proxy", true);
@@ -22,10 +22,10 @@ app.use(
 );
 
 app.use(currentUser);
-app.use(createTicketRouter);
-app.use(showTicketRouter);
-app.use(indexRouter);
-app.use(updateRouter);
+app.use(createOrderRouter);
+app.use(deleteOrderRouter);
+app.use(showOrderRouter);
+app.use(indexOrderRouter);
 
 app.all('*', async () => {
   throw new NotFoundError();
