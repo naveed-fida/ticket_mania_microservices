@@ -2,6 +2,8 @@ import request from 'supertest';
 import app from '../../app';
 import Ticket from '../../models/ticket';
 
+import {natsClient} from "../../nats-client";
+
 it ("has a route handler listening to /api/tickets for post requests", async () => {
   const response = await request(app)
     .post('/api/tickets')
@@ -60,4 +62,16 @@ it ("creates a ticket with valid data", async () => {
 
   tickets = await Ticket.find({});
   expect(tickets.length).toEqual(1);
+});
+
+it ("publishes a 'ticket:created' event", async () => {
+  await request(app)
+    .post('/api/tickets')
+    .set('Cookie', global.signin())
+    .send({title: 'asdfadsfd', price: 20})
+    .expect(201);
+
+  expect(natsClient.publish).toHaveBeenCalled();
+  expect((natsClient.publish as jest.Mock).mock.calls[0][0])
+    .toMatchObject({subject: 'ticket:created'});
 });

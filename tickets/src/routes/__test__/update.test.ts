@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 
 import app from '../../app';
 
+import {natsClient} from "../../nats-client";
+
 const createTicket = (attrs: {}) => {
   return request(app)
     .post('/api/tickets')
@@ -81,4 +83,23 @@ it('sends a 200 if user provides valid inputs', async () => {
     }).expect(200);
 
   expect(response.body.title).toEqual('Another Event');
+});
+
+it ("publishes a 'ticket:updated' event", async () => {
+  let response = await createTicket({ title: 'Some Event', price: 20 });
+  const { id } = response.body;
+
+  (natsClient.publish as jest.Mock).mockClear();
+
+  response = await request(app)
+    .put(`/api/tickets/${id}`)
+    .set('Cookie', global.signin())
+    .send({
+      title: 'Another Event',
+      price: 35
+    }).expect(200);
+
+  expect(natsClient.publish).toHaveBeenCalled();
+  expect((natsClient.publish as jest.Mock).mock.calls[0][0])
+    .toMatchObject({subject: 'ticket:updated'});
 });

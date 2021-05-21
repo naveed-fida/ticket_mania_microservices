@@ -10,8 +10,9 @@ declare global {
   }
 }
 
-let mongo: any;
+jest.mock('../nats-client');
 
+let mongo: any;
 beforeAll(async () => {
   mongo = new MongoMemoryServer();
   const mongoURI = await mongo.getUri();
@@ -25,6 +26,7 @@ beforeAll(async () => {
 });
 
 beforeEach(async () => {
+  jest.clearAllMocks();
   const collections = await mongoose.connection.db.collections();
   for (let collection of collections) {
     await collection.deleteMany({});
