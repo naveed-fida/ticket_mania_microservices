@@ -1,3 +1,0 @@
-[submodule "tickets"]
-	path = tickets
-	url = git@github.com:naveed-fida/ticket_mania_tickets.git
