@@ -8,10 +8,29 @@ const start = async () => {
     throw new Error("No 'JWT_KEY' environment variable found..");
   }
 
+  if (!process.env.MONGO_URI) {
+    throw new Error("No 'MONGO_URI' environment variable found..");
+  }
+
+  if (!process.env.NATS_CLUSTER_ID) {
+    throw new Error("No 'NATS_CLUSTER_ID' environment variable found..");
+  }
+
+  if (!process.env.NATS_CLIENT_ID) {
+    throw new Error("No 'NATS_CLIENT_ID' environment variable found..");
+  }
+
+  if (!process.env.NATS_URL) {
+    throw new Error("No 'NATS_URL' environment variable found..");
+  }
+
   try {
-    await natsClient.connect('ticketing', 'skldflas', 'http://nats-srv:4222');
-    
-    await mongoose.connect('mongodb://auth-mongo-srv:27017/auth', {
+    await natsClient.connect(
+      process.env.NATS_CLUSTER_ID,
+      process.env.NATS_CLIENT_ID,
+      {url: process.env.NATS_URL});
+
+    await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true
