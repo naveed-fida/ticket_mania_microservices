@@ -2,6 +2,8 @@ import express, { Request, Response } from 'express';
 import { requireAuth, validateRequest } from '@nf-ticket-mania/shared';
 import {validators} from "./lib/validators";
 import Ticket from "../models/ticket";
+import {natsClient} from "../nats-client";
+import {publishTicketCreated} from "../events/publishers/publish-ticket-created";
 
 const router = express.Router();
 
@@ -21,6 +23,14 @@ router.post('/api/tickets', middlewares, async (req: Request, res: Response) => 
   });
 
   await ticket.save();
+
+  await publishTicketCreated(natsClient, {
+    id: ticket.id,
+    title: ticket.title,
+    price: ticket.price,
+    userId: ticket.userId
+  })
+
   res.status(201).send(ticket);
 });
 

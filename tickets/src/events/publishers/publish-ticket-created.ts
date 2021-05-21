@@ -1,7 +1,7 @@
 import {NATSConnection, Subjects, TicketCreatedEvent} from '@nf-ticket-mania/shared';
 
-const publishTicketCreated = (conn: NATSConnection, data: TicketCreatedEvent['data']) => {
-  conn.publish<TicketCreatedEvent>({
+const publishTicketCreated = (conn: NATSConnection, data: TicketCreatedEvent['data']): Promise<void> => {
+  return conn.publish<TicketCreatedEvent>({
     subject: Subjects.TicketCreated,
     data
   });

@@ -8,6 +8,8 @@ import {
 
 import {validators} from "./lib/validators";
 import Ticket from "../models/ticket";
+import {publishTicketUpdated} from "../events/publishers/publish-ticket-updated";
+import {natsClient} from "../nats-client";
 
 const router = express.Router();
 
@@ -30,6 +32,13 @@ router.put('/api/tickets/:id', middlewares, async (req: Request, res: Response) 
   const {title, price } = req.body;
   ticket.set({title, price});
   await ticket.save();
+
+  await publishTicketUpdated(natsClient, {
+    id: ticket.id,
+    title: ticket.title,
+    price: ticket.price,
+    userId: ticket.userId
+  })
 
   res.status(200).send(ticket);
 });
