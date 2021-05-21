@@ -26,6 +26,7 @@ export class NATSConnection {
         resolve();
 
         this.handleProcessSignals();
+
         this.client.on('close', () => {
           console.log('NATS connection closed!');
           process.exit();

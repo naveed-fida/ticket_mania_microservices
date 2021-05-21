@@ -2,7 +2,7 @@ import {Message, Stan} from "node-nats-streaming";
 
 import {Event} from "./event-types";
 
-export type MessageCallback<T extends Event> = (data: T['data'], message: Message) => void;
+export type MessageCallback<T extends Event> = (data: T['data'], message?: Message) => void;
 
 export class Listener<T extends Event> {
   private client: Stan;
