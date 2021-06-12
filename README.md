@@ -20,7 +20,3 @@ These services come together inside a Next.js web client.
 
 ## Shared Code
 The shared code is bundled as an npm package and then added as a dependency wherever needed.
-
-## Repository Structure
-The main repository holds infrastructure related config files while the services and the shared code are held in
- seperate repositories that are marked as the submodules of this repository.
